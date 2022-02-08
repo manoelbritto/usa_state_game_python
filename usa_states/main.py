@@ -35,6 +35,7 @@ control_state = []
 while score < 50:
     # pop-up start a text box
     state_type = settitle(title_new).upper()
+
     # help to show all the States
     if state_type == 'HELP':
         # iterate with all values in state column (series)
