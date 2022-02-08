@@ -13,29 +13,48 @@ new_turtle.hideturtle()
 
 # read csv with Pandas
 location = pd.read_csv("50_states.csv")
+location2 = pd.read_csv("50_states.csv")
 
 def setposition(x, y, state):
     new_turtle.penup()
     new_turtle.goto(x, y)
-    new_turtle.write(state)
+    new_turtle.write(str(state[0]))
 
 def settitle(title):
     return screen.textinput(title=title, prompt="Type another state's name:")
 
+# control game score
 score = 0
+# start title
 title_new="Type a State"
+# control the states to avoid to count more than one time
+control_state = []
 # pop-up start a text box
-answer_state = screen.textinput(title=title_new, prompt="Type another state's name:")
+# answer_state = screen.textinput(title=title_new, prompt="Type another state's name:")
 
 while score < 50:
-    state_value = location[location["state"].str.upper() == settitle(title_new).upper()]
-    if len(state_value) > 0:
+    # pop-up start a text box
+    state_type = settitle(title_new).upper()
+    # help to show all the States
+    if state_type == 'HELP':
+        # iterate with all values in state column (series)
+        for index, value in location["state"].items():
+            check = str(value).upper()
+            state_value = location[location["state"].str.upper() == check]
+            setposition(int(state_value['x']), int(state_value['y']), state_value["state"].values)
+
+    state_value = location[location["state"].str.upper() == state_type]
+
+    if len(state_value) > 0 and state_value["state"].values[0] not in control_state:
         score += 1
-        setposition(int(state_value['x']), int(state_value['y']), str(state_value["state"]))
+        setposition(int(state_value['x']), int(state_value['y']), state_value["state"].values)
+        control_state.append(state_value["state"].values[0])
         title_new = f"{score} of 50"
 
     if score == 0:
         title_new = 0
+
+
 turtle.mainloop()
 
 # get coordination from any image
