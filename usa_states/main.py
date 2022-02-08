@@ -18,7 +18,7 @@ location2 = pd.read_csv("50_states.csv")
 def setposition(x, y, state):
     new_turtle.penup()
     new_turtle.goto(x, y)
-    new_turtle.write(str(state[0]))
+    new_turtle.write(state)
 
 def settitle(title):
     return screen.textinput(title=title, prompt="Type another state's name:")
@@ -41,13 +41,13 @@ while score < 50:
         for index, value in location["state"].items():
             check = str(value).upper()
             state_value = location[location["state"].str.upper() == check]
-            setposition(int(state_value['x']), int(state_value['y']), state_value["state"].values)
+            setposition(int(state_value['x']), int(state_value['y']), state_value["state"].item())
 
     state_value = location[location["state"].str.upper() == state_type]
 
     if len(state_value) > 0 and state_value["state"].values[0] not in control_state:
         score += 1
-        setposition(int(state_value['x']), int(state_value['y']), state_value["state"].values)
+        setposition(int(state_value['x']), int(state_value['y']), state_value["state"].item())
         control_state.append(state_value["state"].values[0])
         title_new = f"{score} of 50"
 
