@@ -45,6 +45,15 @@ while score < 50:
             state_value = location[location["state"].str.upper() == check]
             setposition(int(state_value['x']), int(state_value['y']), state_value["state"].item())
     if state_type == 'EXIT':
+        # consolidate the list and keep a list for what the user didn't guess
+        consolation_list = []
+        for n in full_state_list:
+            if n not in control_state:
+                consolation_list.append(n)
+        data_missed = {"states you missed": consolation_list}
+        dataframe = pd.DataFrame(data=data_missed)
+
+        dataframe.to_csv("to_learn.csv")
         break
 
     state_value = location[location["state"].str.upper() == state_type]
@@ -58,16 +67,7 @@ while score < 50:
     if score == 0:
         title_new = 0
 
-# consolidate the list and keep a list for what the user didn't guess
-consolation_list = []
-for n in  full_state_list:
-    if n not in control_state:
-        consolation_list.append(n)
 
-data_missed = {"states you missed": consolation_list}
-dataframe = pd.DataFrame(data=data_missed)
-
-dataframe.to_csv("to_learn.csv")
 
 turtle.exitonclick()
 
